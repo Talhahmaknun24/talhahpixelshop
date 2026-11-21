@@ -13,10 +13,11 @@ import init, * as bindings from './photocraft-web-20ca2a6b24e73d2e.js';
 const statusEl = document.getElementById('photocraft_load_status');
 const setStatus = (t) => { if (statusEl) statusEl.textContent = t; };
 
-// The 74 MB WebAssembly file is stored in this repo as 7 base64 text chunks
-// (wasm/part0.b64 ... part6.b64) because the GitHub connector only accepts
-// text files. Reassemble them here, then start the app from a Blob URL.
-const PARTS = 7;
+// The 74 MB WebAssembly file is stored in this repo gzip-compressed and split
+// into 13 base64 text chunks (wasm/part0.b64 ... part12.b64) because the GitHub
+// connector only accepts text files. Reassemble + gunzip them here, then start
+// the app from a Blob URL.
+const PARTS = 13;
 const chunks = [];
 for (let i = 0; i < PARTS; i++) {
   setStatus(`Loading TalhahPixelShop... (${i}/${PARTS})`);
@@ -28,7 +29,9 @@ for (let i = 0; i < PARTS; i++) {
   chunks.push(bytes);
 }
 setStatus('Loading TalhahPixelShop... (starting)');
-const wasmUrl = URL.createObjectURL(new Blob(chunks, { type: 'application/wasm' }));
+const gzipped = new Blob(chunks, { type: 'application/gzip' });
+const wasmBuf = await new Response(gzipped.stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer();
+const wasmUrl = URL.createObjectURL(new Blob([wasmBuf], { type: 'application/wasm' }));
 const wasm = await init({ module_or_path: wasmUrl });
 
 window.wasmBindings = bindings;

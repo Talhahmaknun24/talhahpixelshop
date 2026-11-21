@@ -14,14 +14,16 @@ This repo holds the prebuilt static site (no build step needed):
 - `index.html` — page + loader (Tamaddun logo inlined as a data URI)
 - `photocraft-web-*.js` — wasm-bindgen glue
 - `snippets/eframe-*/inline0.js` — eframe text-agent snippet
-- `wasm/part0.b64` … `wasm/part6.b64` — the 74 MB WebAssembly file, split
-  into 7 base64 text chunks
+- `wasm/part0.b64` … `wasm/part12.b64` — the 74 MB WebAssembly file,
+  gzip-compressed (28 MB) and split into 13 base64 text chunks
 
 Why the chunks: the GitHub connector used to publish this site only accepts
-UTF-8 text files (max 16 MiB per push), so the `.wasm` binary is stored as
-base64 text and reassembled in the browser by the loader in `index.html`
-(fetch → `atob` → `Blob` → `init({ module_or_path: blobUrl })`). The
-reassembled bytes are verified identical to the built wasm
+UTF-8 text files (max 16 MiB per push, and the transport rejects bodies over
+~7 MB), so the `.wasm` binary is stored gzip-compressed as base64 text and
+reassembled in the browser by the loader in `index.html`
+(fetch → `atob` → gunzip via `DecompressionStream` → `Blob` →
+`init({ module_or_path: blobUrl })`). The reassembled bytes are verified
+identical to the built wasm
 (sha256 `ab5f1317fa0ab4a54fa58b3ea525121ca6736f1efbcd159767eeaa5440261355`).
 To update the app, rebuild the web bundle and replace the chunks + glue
 files; the loader stays the same.
