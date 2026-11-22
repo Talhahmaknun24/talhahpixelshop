@@ -1,0 +1,7 @@
+# family | style | file (relative to the site root) | scripts | licence | licence file | sha256 | source
+# Tamaddun brand fonts (SIL Open Font License 1.1), served next to the web app.
+Baloo Da 2 | Regular | fonts/BalooDa2[wght].ttf | Beng,Latn | OFL-1.1 | fonts/OFL-BalooDa2.txt
+Hind Siliguri | Regular | fonts/HindSiliguri-Regular.ttf | Beng,Latn | OFL-1.1 | fonts/OFL-HindSiliguri.txt
+Hind Siliguri | Medium | fonts/HindSiliguri-Medium.ttf | Beng,Latn | OFL-1.1 | fonts/OFL-HindSiliguri.txt
+Hind Siliguri | SemiBold | fonts/HindSiliguri-SemiBold.ttf | Beng,Latn | OFL-1.1 | fonts/OFL-HindSiliguri.txt
+Hind Siliguri | Bold | fonts/HindSiliguri-Bold.ttf | Beng,Latn | OFL-1.1 | fonts/OFL-HindSiliguri.txt
